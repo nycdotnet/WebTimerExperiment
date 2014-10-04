@@ -29,6 +29,21 @@ namespace WebTimer
                     time.Seconds.ToString().PadLeft(2, '0'));
             }
         }
+
+        public string TimeDescription
+        {
+            get
+            {
+                int sumMinutes = codingMinutes + surfingMinutes;
+                int currentMinute = (Int32)Math.Floor(time.TotalMinutes) % sumMinutes;
+                if (currentMinute < codingMinutes)
+                {
+                    return "Coding Time";
+                }
+                return "Surfing Time";
+            }
+        }
+
         
         public string ValidCommand
         {
@@ -69,7 +84,12 @@ namespace WebTimer
         void timer_Elapsed(object sender, ElapsedEventArgs e)
         {
             time = time.Add(new TimeSpan(0, 0, 1));
+            if (time.TotalMinutes >= codingMinutes + surfingMinutes)
+            {
+                time = new TimeSpan(0, 0, 0);
+            }
             NotifyPropertyChanged("TimeFormatted");
+            NotifyPropertyChanged("TimeDescription");
         }
 
         public void Toggle()
@@ -103,6 +123,16 @@ namespace WebTimer
                 PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
             }
         }
-        
+
+
+        public void Reset()
+        {
+            if (timer.Enabled)
+            {
+                Stop();
+            }
+            time = new TimeSpan(0, 0, 0);
+            NotifyPropertyChanged("TimeFormatted");
+        }
     }
 }

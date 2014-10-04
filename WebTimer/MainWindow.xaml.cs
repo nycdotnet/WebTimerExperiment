@@ -31,9 +31,15 @@ namespace WebTimer
             DataContext = model;
         }
 
-        private void Button_Click(object sender, RoutedEventArgs e)
+        private void Toggle_Click(object sender, RoutedEventArgs e)
         {
             model.Toggle();
         }
+
+        private void Reset_Click(object sender, RoutedEventArgs e)
+        {
+            model.Reset();
+        }
+
     }
 }
